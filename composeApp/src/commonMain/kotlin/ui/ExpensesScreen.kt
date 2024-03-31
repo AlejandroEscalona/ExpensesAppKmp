@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import data.ExpenseManager
 import model.Expense
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,20 +49,8 @@ fun ExpensesScreen() {
                 AllExpensesHeader()
             }
         }
-        val expenseItems = listOf(
-            Expense(1, 10.0, model.ExpenseCategory.GROCERIES, "Pizza"),
-            Expense(2, 20.0, model.ExpenseCategory.HOUSE, "House"),
-            Expense(3, 30.0, model.ExpenseCategory.UTILITIES, "Utilities"),
-            Expense(4, 40.0, model.ExpenseCategory.PARTY, "Party"),
-            Expense(5, 50.0, model.ExpenseCategory.COFFEE, "Coffee"),
-            Expense(6, 65.2, model.ExpenseCategory.TRANSPORTATION, "Transportation"),
-            Expense(7, 70.0, model.ExpenseCategory.ENTERTAINMENT, "Entertainment"),
-            Expense(8, 80.0, model.ExpenseCategory.GROCERIES, "Potato"),
-            Expense(9, 90.0, model.ExpenseCategory.HOUSE, "House"),
-            Expense(10, 120.3, model.ExpenseCategory.UTILITIES, "Utilities"),
-            Expense(11, 110.0, model.ExpenseCategory.PARTY, "Party"),
-        )
-        items(expenseItems) { expense ->
+
+        items(ExpenseManager.fakeExpenses) { expense ->
             ExpenseItem(expense = expense) {
 
             }
@@ -124,17 +113,17 @@ fun ExpenseItem(expense: Expense, onExpenseClick: (Expense) -> Unit) {
         modifier = Modifier.padding(8.dp).fillMaxWidth().clickable {
             onExpenseClick(expense)
         },
-        shape = RoundedCornerShape(10),
+        shape = RoundedCornerShape(20),
         elevation = 10.dp,
         backgroundColor = colors.background
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Surface (
-                modifier = Modifier.size(50.dp),
-                shape = RoundedCornerShape(15),
-                color = expense.color.copy(alpha = 0.5f)
+            Surface(
+                modifier = Modifier.size(65.dp).padding(8.dp),
+                shape = RoundedCornerShape(20),
+                color = expense.color.copy(alpha = 0.6f)
             ) {
                 Image(
                     imageVector = expense.icon,
@@ -149,13 +138,22 @@ fun ExpenseItem(expense: Expense, onExpenseClick: (Expense) -> Unit) {
                 Text(
                     text = expense.category.name,
                     style = MaterialTheme.typography.h6,
-                    color = colors.textColor
+                    color = colors.textColor,
+                    fontSize = 18.sp
                 )
                 Text(
                     text = expense.description,
                     style = MaterialTheme.typography.body1,
-                    color = colors.textColor)
+                    color = Color.Gray
+                )
             }
+            Text(
+                text = "$${expense.amount}",
+                style = MaterialTheme.typography.h6,
+                color = colors.textColor,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(end = 16.dp)
+            )
         }
 
     }
